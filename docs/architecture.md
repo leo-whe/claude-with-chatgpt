@@ -6,32 +6,33 @@
              │  Reason / Plan / Review   │
              └──────────┬──────────▲─────┘
                         │          │
-               MCP      │          │ Computer Use
-            Data Plane  │          │ Control Plane
+               MCP      │          │ Chrome tab
+            Data Plane  │          │ (claude-in-chrome)
+                        │          │ Control Plane
                         ▼          │
-             ┌─────────────────────┐
-             │      C2C Bridge     │
-             │  MCP Server (RO)    │
-             │  OAuth AS + PRM     │
-             │  Pairing Manager    │
-             │  Tunnel Manager     │
-             │  Admin API (local)  │
-             └──────────┬──────────┘
+             ┌───────────────────────────┐
+             │        C2G Bridge         │
+             │    MCP Server (RO)        │
+             │    OAuth AS + PRM         │
+             │    Pairing Manager        │
+             │    Tunnel Manager         │
+             │    Admin API (local)      │
+             └──────────┬──────────▲─────┘
                         │  read-only
                         ▼
-             ┌─────────────────────┐
-             │   Local Workspace   │
-             └──────────▲──────────┘
+             ┌───────────────────────────┐
+             │      Local Workspace      │
+             └──────────▲────────────────┘
                         │ edit / shell / git / test
-             ┌──────────┴──────────┐
-             │  Codex Harness      │
-             └─────────────────────┘
+             ┌──────────┴────────────────┐
+             │    Claude Code Harness    │
+             └───────────────────────────┘
 ```
 
 ## Principles
 
-- **ChatGPT thinks. Codex works.** The bridge never re-implements a coding harness.
-- **Computer Use = control plane**: tiny `[C2C]` state messages (< 1 KB).
+- **ChatGPT thinks. Claude Code works.** The bridge never re-implements a coding harness.
+- **A Chrome tab (`claude-in-chrome`) = control plane**: tiny `[C2G]` state messages (< 1 KB).
 - **MCP = data plane**: ChatGPT pulls files/diffs/search results itself.
 - **Read-only by design**: no write/exec tools exist in V1 at all.
 - **Workspace is the security boundary**: one bridge = one workspace = one token audience.
@@ -48,7 +49,7 @@
 | `tunnel/` | `TunnelProvider` interface + Cloudflare Quick and workspace-configured Named Tunnel implementations; business logic is vendor-agnostic |
 | `execution/` | JSONL execution records plus optional sanitized command output (`execution_output`) |
 | `process/` | Daemon spawn/reuse, health probing, graceful shutdown |
-| `cli/` | `c2c` commands; `--json` everywhere for the Skill |
+| `cli/` | `c2g` commands; `--json` everywhere for the Skill |
 | `config/`, `logger/` | OS-convention state dir, secret-redacting logger |
 
 ## Request lifecycles
@@ -63,18 +64,18 @@
 authorization code → `/oauth/token` (PKCE S256) → access + refresh tokens.
 
 **Ports**: prefer 48765, bind 127.0.0.1 only. On conflict, `/health` identifies
-whether the occupant is a c2c bridge for the same workspace (reuse) or not
+whether the occupant is a c2g bridge for the same workspace (reuse) or not
 (fall back to an ephemeral port). Configuration follows automatically via the
 runtime state file; users never see ports.
 
 **Tunnel**: default is a Cloudflare Quick Tunnel (`cloudflared tunnel --url …`).
-The URL changes per start, so `c2c doctor` can restart it and tell the Skill to
+The URL changes per start, so `c2g doctor` can restart it and tell the Skill to
 Delete + recreate that workspace's ChatGPT connector. A workspace may instead
-choose a named hostname once (`c2c tunnel choose --mode named`). The Skill asks
+choose a named hostname once (`c2g tunnel choose --mode named`). The Skill asks
 before the first public URL exists; `cloudflared tunnel login` is the only extra
 user step. Tunnel name, hostname and preference live under the OS state dir
 (`tunnels/<workspaceId>.json`), never in the project. Named starts use
 `cloudflared tunnel --url … run <name>` so the public URL stays stable. If named
-provisioning fails, C2C falls back to Quick Tunnel. If a named tunnel later
+provisioning fails, C2G falls back to Quick Tunnel. If a named tunnel later
 drops, doctor asks for a Cloudflare re-login (`namedRepair`) instead of
 rotating the ChatGPT connector.
