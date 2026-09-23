@@ -21,11 +21,12 @@ import {
 } from "../src/tunnel/named-provision.js";
 import { resolveTunnelProtocol, tunnelProtocolArgs } from "../src/tunnel/protocol.js";
 import { isNamedTunnelReady, needsTunnelChoice, readTunnelState } from "../src/tunnel/state.js";
+import { SERVICE_NAME } from "../src/version.js";
 import { cleanup, isolateStateDir, makeTmpDir, write } from "./helpers.js";
 
 const stateDirs: string[] = [];
-const previousStateDir = process.env.C2C_STATE_DIR;
-const previousCloudflaredPath = process.env.C2C_CLOUDFLARED_PATH;
+const previousStateDir = process.env.C2G_STATE_DIR;
+const previousCloudflaredPath = process.env.C2G_CLOUDFLARED_PATH;
 const QUICK_URL = "https://random-words-here-1234.trycloudflare.com";
 type FetchImpl = NonNullable<CloudflaredQuickTunnelOptions["fetchImpl"]>;
 
@@ -57,25 +58,25 @@ function announceUrl(child: FakeCloudflaredProcess): void {
 }
 
 function healthResponse(): Response {
-  return new Response(JSON.stringify({ service: "c2c-bridge", status: "ok" }), { status: 200 });
+  return new Response(JSON.stringify({ service: SERVICE_NAME, status: "ok" }), { status: 200 });
 }
 
 afterEach(() => {
   while (stateDirs.length) cleanup(stateDirs.pop()!);
-  if (previousStateDir === undefined) delete process.env.C2C_STATE_DIR;
-  else process.env.C2C_STATE_DIR = previousStateDir;
-  if (previousCloudflaredPath === undefined) delete process.env.C2C_CLOUDFLARED_PATH;
-  else process.env.C2C_CLOUDFLARED_PATH = previousCloudflaredPath;
+  if (previousStateDir === undefined) delete process.env.C2G_STATE_DIR;
+  else process.env.C2G_STATE_DIR = previousStateDir;
+  if (previousCloudflaredPath === undefined) delete process.env.C2G_CLOUDFLARED_PATH;
+  else process.env.C2G_CLOUDFLARED_PATH = previousCloudflaredPath;
 });
 
 describe("findBinary", () => {
-  it("uses C2C_CLOUDFLARED_PATH for an accessible cloudflared executable", () => {
+  it("uses C2G_CLOUDFLARED_PATH for an accessible cloudflared executable", () => {
     const dir = makeTmpDir("cloudflared-path");
     stateDirs.push(dir);
     const filename = process.platform === "win32" ? "cloudflared.exe" : "cloudflared";
     const configured = write(dir, filename, "placeholder");
     if (process.platform !== "win32") fs.chmodSync(configured, 0o755);
-    process.env.C2C_CLOUDFLARED_PATH = configured;
+    process.env.C2G_CLOUDFLARED_PATH = configured;
     expect(findBinary("cloudflared")).toBe(configured);
   });
 });
@@ -119,8 +120,8 @@ describe("CloudflaredQuickTunnel", () => {
     await tunnel.stop();
   });
 
-  it("passes --protocol when C2C_TUNNEL_PROTOCOL is set", async () => {
-    vi.stubEnv("C2C_TUNNEL_PROTOCOL", "http2");
+  it("passes --protocol when C2G_TUNNEL_PROTOCOL is set", async () => {
+    vi.stubEnv("C2G_TUNNEL_PROTOCOL", "http2");
     const { child, spawnImpl, tunnel } = setupTunnel(async () => healthResponse());
     const starting = tunnel.start(3333);
     announceUrl(child);
@@ -220,22 +221,22 @@ describe("CloudflaredQuickTunnel", () => {
 });
 
 describe("tunnel transport protocol", () => {
-  it("keeps cloudflared's default when C2C_TUNNEL_PROTOCOL is unset or empty", () => {
+  it("keeps cloudflared's default when C2G_TUNNEL_PROTOCOL is unset or empty", () => {
     expect(resolveTunnelProtocol({})).toBeNull();
-    expect(resolveTunnelProtocol({ C2C_TUNNEL_PROTOCOL: "  " })).toBeNull();
+    expect(resolveTunnelProtocol({ C2G_TUNNEL_PROTOCOL: "  " })).toBeNull();
     expect(tunnelProtocolArgs(null)).toEqual([]);
   });
 
   it("accepts the cloudflared protocol names case-insensitively", () => {
-    expect(resolveTunnelProtocol({ C2C_TUNNEL_PROTOCOL: "HTTP2" })).toBe("http2");
-    expect(resolveTunnelProtocol({ C2C_TUNNEL_PROTOCOL: " quic " })).toBe("quic");
-    expect(resolveTunnelProtocol({ C2C_TUNNEL_PROTOCOL: "auto" })).toBe("auto");
+    expect(resolveTunnelProtocol({ C2G_TUNNEL_PROTOCOL: "HTTP2" })).toBe("http2");
+    expect(resolveTunnelProtocol({ C2G_TUNNEL_PROTOCOL: " quic " })).toBe("quic");
+    expect(resolveTunnelProtocol({ C2G_TUNNEL_PROTOCOL: "auto" })).toBe("auto");
     expect(tunnelProtocolArgs("http2")).toEqual(["--protocol", "http2"]);
   });
 
   it("rejects unknown protocols instead of silently falling back", () => {
-    expect(() => resolveTunnelProtocol({ C2C_TUNNEL_PROTOCOL: "tcp" })).toThrow(
-      /C2C_TUNNEL_PROTOCOL must be one of auto, quic, http2/
+    expect(() => resolveTunnelProtocol({ C2G_TUNNEL_PROTOCOL: "tcp" })).toThrow(
+      /C2G_TUNNEL_PROTOCOL must be one of auto, quic, http2/
     );
   });
 });

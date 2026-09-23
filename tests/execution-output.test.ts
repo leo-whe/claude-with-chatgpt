@@ -53,7 +53,7 @@ describe("execution output store", () => {
   afterEach(() => {
     for (const dir of dirs) cleanup(dir);
     dirs.length = 0;
-    delete process.env.C2C_STATE_DIR;
+    delete process.env.C2G_STATE_DIR;
   });
 
   it("stores readable output and hides restricted bodies", () => {

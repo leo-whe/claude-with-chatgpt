@@ -4,20 +4,20 @@ import fs from "node:fs";
 
 /**
  * State directory resolution, following OS conventions.
- * Override with C2C_STATE_DIR (used heavily by tests).
+ * Override with C2G_STATE_DIR (used heavily by tests).
  */
 export function getStateDir(): string {
-  const override = process.env.C2C_STATE_DIR;
+  const override = process.env.C2G_STATE_DIR;
   if (override && override.trim() !== "") return path.resolve(override);
   const home = os.homedir();
   switch (process.platform) {
     case "darwin":
-      return path.join(home, "Library", "Application Support", "codex-with-chatgpt");
+      return path.join(home, "Library", "Application Support", "claude-with-chatgpt");
     case "win32":
-      return path.join(process.env.LOCALAPPDATA ?? path.join(home, "AppData", "Local"), "codex-with-chatgpt");
+      return path.join(process.env.LOCALAPPDATA ?? path.join(home, "AppData", "Local"), "claude-with-chatgpt");
     default: {
       const base = process.env.XDG_STATE_HOME ?? path.join(home, ".local", "state");
-      return path.join(base, "codex-with-chatgpt");
+      return path.join(base, "claude-with-chatgpt");
     }
   }
 }

@@ -140,7 +140,7 @@ c2c status / doctor / pair / unpair / logs / stop
 
 环境要求：Node.js >= 20、git；公网连接需要 `cloudflared`
 （自动检测，Skill 会替你安装）。如果 QUIC 被拦截，设置
-`C2C_TUNNEL_PROTOCOL=http2` 后重启 Bridge。
+`C2G_TUNNEL_PROTOCOL=http2` 后重启 Bridge。
 
 文档：[架构](docs/architecture.md) · [协议](docs/protocol.md) ·
 [安全](docs/security.md) · [故障排查](docs/troubleshooting.md)

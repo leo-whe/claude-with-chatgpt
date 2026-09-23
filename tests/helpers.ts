@@ -51,7 +51,7 @@ export function git(dir: string, ...args: string[]): string {
 
 export function makeGitRepo(dir: string): void {
   git(dir, "init", "-b", "main");
-  write(dir, "hello.txt", "Hello from Codex with ChatGPT!\n");
+  write(dir, "hello.txt", "Hello from Claude with ChatGPT!\n");
   write(dir, "src/index.ts", "export const answer = 42;\n");
   git(dir, "add", ".");
   git(dir, "commit", "-m", "initial commit");
@@ -60,7 +60,7 @@ export function makeGitRepo(dir: string): void {
 /** Point the persistent state dir at an isolated temp location. */
 export function isolateStateDir(): string {
   const dir = makeTmpDir("state");
-  process.env.C2C_STATE_DIR = dir;
+  process.env.C2G_STATE_DIR = dir;
   return dir;
 }
 

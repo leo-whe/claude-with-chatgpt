@@ -67,7 +67,7 @@ Older codes become invalid immediately. Do not mint a code during `c2c doctor`.
 
 ### Temporary address keeps dropping on a UDP-filtered network
 cloudflared defaults to QUIC. If the tunnel reconnects over and over on a
-corporate network, set `C2C_TUNNEL_PROTOCOL=http2` and restart the bridge.
+corporate network, set `C2G_TUNNEL_PROTOCOL=http2` and restart the bridge.
 Leave it unset to keep cloudflared's default.
 
 ### ChatGPT gets 401 on every tool call
@@ -82,7 +82,7 @@ Windows: `winget install Cloudflare.cloudflared`
 Linux: see Cloudflare's package instructions.
 The Skill installs this automatically during setup.
 If cloudflared is installed in a custom location that is not on `PATH`, set
-`C2C_CLOUDFLARED_PATH` to the executable's absolute path before running `c2c`.
+`C2G_CLOUDFLARED_PATH` to the executable's absolute path before running `c2c`.
 
 ### Every new Codex chat “repairs” the connection / cannot write logs
 The C2C state directory lives outside the project (macOS:

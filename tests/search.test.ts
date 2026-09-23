@@ -5,7 +5,7 @@ import { makeTmpDir, cleanup, write } from "./helpers.js";
 
 let root: string;
 let ws: Workspace;
-const globMarker = "C2C_GLOB_MARKER";
+const globMarker = "C2G_GLOB_MARKER";
 
 beforeAll(() => {
   root = makeTmpDir("search-ws");
@@ -27,7 +27,7 @@ afterAll(() => {
 });
 
 afterEach(() => {
-  delete process.env.C2C_DISABLE_RG;
+  delete process.env.C2G_DISABLE_RG;
   resetRipgrepCache();
 });
 
@@ -37,7 +37,7 @@ function engines(): ("ripgrep" | "node")[] {
 
 describe.each(engines())("search engine: %s", (engine) => {
   const configure = (): void => {
-    if (engine === "node") process.env.C2C_DISABLE_RG = "1";
+    if (engine === "node") process.env.C2G_DISABLE_RG = "1";
     resetRipgrepCache();
   };
 

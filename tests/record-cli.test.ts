@@ -21,14 +21,14 @@ function runRecord(root: string, args: string[]) {
 function withRecordEnvironment(run: (root: string, workspace: Workspace) => void): void {
   const root = makeTmpDir("record-cli-workspace");
   const stateDir = makeTmpDir("record-cli-state");
-  const previousStateDir = process.env.C2C_STATE_DIR;
-  process.env.C2C_STATE_DIR = stateDir;
+  const previousStateDir = process.env.C2G_STATE_DIR;
+  process.env.C2G_STATE_DIR = stateDir;
 
   try {
     run(root, new Workspace(root));
   } finally {
-    if (previousStateDir === undefined) delete process.env.C2C_STATE_DIR;
-    else process.env.C2C_STATE_DIR = previousStateDir;
+    if (previousStateDir === undefined) delete process.env.C2G_STATE_DIR;
+    else process.env.C2G_STATE_DIR = previousStateDir;
     cleanup(root);
     cleanup(stateDir);
   }

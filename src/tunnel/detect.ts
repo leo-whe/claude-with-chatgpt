@@ -25,8 +25,8 @@ function accessibleFile(candidate: string): string | null {
 /** Locate a binary on PATH or in common install locations. */
 export function findBinary(name: string): string | null {
   const exe = process.platform === "win32" ? `${name}.exe` : name;
-  if (name === "cloudflared" && process.env.C2C_CLOUDFLARED_PATH?.trim()) {
-    const configured = accessibleFile(process.env.C2C_CLOUDFLARED_PATH.trim());
+  if (name === "cloudflared" && process.env.C2G_CLOUDFLARED_PATH?.trim()) {
+    const configured = accessibleFile(process.env.C2G_CLOUDFLARED_PATH.trim());
     if (configured) return configured;
   }
   try {

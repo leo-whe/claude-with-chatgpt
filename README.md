@@ -210,7 +210,7 @@ c2c status / doctor / pair / unpair / logs / stop
 
 Requirements: Node.js >= 20, git. `cloudflared` for the public connection
 (auto-detected; the Skill installs it for you). If QUIC is blocked, set
-`C2C_TUNNEL_PROTOCOL=http2` and restart the bridge.
+`C2G_TUNNEL_PROTOCOL=http2` and restart the bridge.
 
 Docs: [architecture](docs/architecture.md) · [protocol](docs/protocol.md) ·
 [security](docs/security.md) · [troubleshooting](docs/troubleshooting.md)

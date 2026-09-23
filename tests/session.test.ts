@@ -64,13 +64,13 @@ describe("resolveConversation", () => {
       conversationMode: "project",
       projectUrl: PROJECT,
       url: "https://chatgpt.com/c/thread-1",
-      connectorName: "Codex with ChatGPT · Demo",
+      connectorName: "Claude with ChatGPT · Demo",
       savedAt: "2026-01-01T00:00:00.000Z",
     });
     expect(view.mode).toBe("project");
     expect(view.projectReady).toBe(true);
     expect(view.reuseSavedChat).toBe(false);
-    expect(view.connectorName).toBe("Codex with ChatGPT · Demo");
+    expect(view.connectorName).toBe("Claude with ChatGPT · Demo");
   });
 });
 
@@ -80,7 +80,7 @@ describe("mergeSession", () => {
       {
         conversationMode: "project",
         projectUrl: PROJECT,
-        connectorName: "Codex with ChatGPT · Demo",
+        connectorName: "Claude with ChatGPT · Demo",
         url: "https://chatgpt.com/c/old",
         savedAt: "2026-01-01T00:00:00.000Z",
       },
@@ -89,7 +89,7 @@ describe("mergeSession", () => {
     expect(next.projectUrl).toBe(PROJECT);
     expect(next.conversationMode).toBe("project");
     expect(next.url).toBe("https://chatgpt.com/c/new");
-    expect(next.connectorName).toBe("Codex with ChatGPT · Demo");
+    expect(next.connectorName).toBe("Claude with ChatGPT · Demo");
     expect(next.taskId).toBe("c2c_ab12");
   });
 
@@ -190,18 +190,18 @@ describe("clearChatPointer", () => {
   afterEach(() => {
     for (const dir of dirs) cleanup(dir);
     dirs.length = 0;
-    delete process.env.C2C_STATE_DIR;
+    delete process.env.C2G_STATE_DIR;
   });
 
   it("keeps the collection binding in Project mode", () => {
     const dir = makeTmpDir("session-clear");
     dirs.push(dir);
-    process.env.C2C_STATE_DIR = dir;
+    process.env.C2G_STATE_DIR = dir;
     writeSession("abc123abc123", {
       conversationMode: "project",
       projectUrl: PROJECT,
       url: "https://chatgpt.com/c/gone",
-      connectorName: "Codex with ChatGPT · Demo",
+      connectorName: "Claude with ChatGPT · Demo",
       checkpoint: {
         taskId: "c2c_ab12",
         iteration: 4,
@@ -222,7 +222,7 @@ describe("clearChatPointer", () => {
   it("deletes a legacy long-chat file", () => {
     const dir = makeTmpDir("session-clear-legacy");
     dirs.push(dir);
-    process.env.C2C_STATE_DIR = dir;
+    process.env.C2G_STATE_DIR = dir;
     writeSession("def456def456", {
       url: "https://chatgpt.com/c/legacy",
       savedAt: "2026-01-01T00:00:00.000Z",
