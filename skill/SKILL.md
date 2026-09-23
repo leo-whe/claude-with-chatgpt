@@ -630,7 +630,7 @@ If status is restricted, ignore it and review from git_diff.
    `c2c session set -w <ws> --protocol-state EXECUTED_SENT --waiting-for GPT_REVIEW --next-step "wait for PLAN or DONE"`
 7. ChatGPT reviews via MCP (`git_diff`, `read_file`, `test_status`,
    `execution_output`) and replies DONE / PLAN (next iteration) / BLOCKED.
-8. Loop. Respect maxIterations (`.c2c.json`, default 12). At the limit, pause and ask
+8. Loop. Respect maxIterations (`.c2g.json`, default 12). At the limit, pause and ask
    the user: "已完成 12 轮协作，仍有未解决问题，是否继续？"
 9. On DONE: summarize the result to the user in plain language.
    `c2c session set -w <ws> --state DONE --clear-checkpoint`

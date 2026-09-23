@@ -33,10 +33,10 @@ export function write(dir: string, rel: string, content: string): string {
 
 const GIT_ENV = {
   ...process.env,
-  GIT_AUTHOR_NAME: "c2c-test",
-  GIT_AUTHOR_EMAIL: "test@c2c.local",
-  GIT_COMMITTER_NAME: "c2c-test",
-  GIT_COMMITTER_EMAIL: "test@c2c.local",
+  GIT_AUTHOR_NAME: "c2g-test",
+  GIT_AUTHOR_EMAIL: "test@c2g.local",
+  GIT_COMMITTER_NAME: "c2g-test",
+  GIT_COMMITTER_EMAIL: "test@c2g.local",
   GIT_CONFIG_GLOBAL: "/dev/null",
   GIT_CONFIG_SYSTEM: "/dev/null",
 };

@@ -253,12 +253,12 @@ describe("normalizeNamedTunnelHostname", () => {
 });
 
 describe("named hostname helpers", () => {
-  it("builds a stable c2c-<project>.<zone> hostname", () => {
-    expect(suggestedNamedHostname("Example.COM", "My App", "abcdef123456")).toBe("c2c-my-app.example.com");
+  it("builds a stable c2g-<project>.<zone> hostname", () => {
+    expect(suggestedNamedHostname("Example.COM", "My App", "abcdef123456")).toBe("c2g-my-app.example.com");
   });
 
   it("falls back to the workspace id when the name is not ASCII", () => {
-    expect(hostnameSlug("回声", "abcdef123456")).toBe("c2c-ws-abcdef12");
+    expect(hostnameSlug("回声", "abcdef123456")).toBe("c2g-ws-abcdef12");
   });
 
   it("parses a typed domain", () => {
@@ -271,20 +271,20 @@ describe("cloudflared output parsers", () => {
   it("reads a tunnel list table", () => {
     const output = `
 ID                                   NAME          CREATED
-11111111-1111-1111-1111-111111111111 c2c-abc123    2026-08-30
+11111111-1111-1111-1111-111111111111 c2g-abc123    2026-08-30
 `;
     expect(parseTunnelList(output)).toEqual([
-      { id: "11111111-1111-1111-1111-111111111111", name: "c2c-abc123" },
+      { id: "11111111-1111-1111-1111-111111111111", name: "c2g-abc123" },
     ]);
   });
 
   it("reads created-tunnel output", () => {
     expect(
       parseCreatedTunnel(
-        "Created tunnel c2c-abc with id 22222222-2222-2222-2222-222222222222",
-        "c2c-abc"
+        "Created tunnel c2g-abc with id 22222222-2222-2222-2222-222222222222",
+        "c2g-abc"
       )
-    ).toEqual({ id: "22222222-2222-2222-2222-222222222222", name: "c2c-abc" });
+    ).toEqual({ id: "22222222-2222-2222-2222-222222222222", name: "c2g-abc" });
   });
 
   it("treats an existing DNS route as success", () => {
@@ -320,8 +320,8 @@ describe("tunnel preference state", () => {
     }).then((result) => {
       expect(result.fallback).toBe(false);
       expect(result.state.preference).toBe("named");
-      expect(result.state.hostname).toBe("c2c-demo.example.com");
-      expect(result.state.tunnelName).toBe("c2c-abcdef123456");
+      expect(result.state.hostname).toBe("c2g-demo.example.com");
+      expect(result.state.tunnelName).toBe("c2g-abcdef123456");
       expect(isNamedTunnelReady(readTunnelState("abcdef123456"))).toBe(true);
     });
   });

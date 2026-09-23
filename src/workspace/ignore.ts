@@ -39,7 +39,7 @@ export const SENSITIVE_PATTERNS: string[] = [
   "secrets.json",
   "cookies.sqlite",
   "Cookies",
-  ".c2c-secrets*",
+  ".c2g-secrets*",
 ];
 
 /** High-noise directories excluded from listing/search by default. */
@@ -81,13 +81,13 @@ export class IgnoreRules {
     this.sensitive = ignore().add(SENSITIVE_PATTERNS);
     this.noise = ignore().add(NOISE_PATTERNS);
     this.custom = ignore();
-    const c2cignore = path.join(workspaceRoot, ".c2cignore");
+    const c2cignore = path.join(workspaceRoot, ".c2gignore");
     try {
       if (fs.existsSync(c2cignore)) {
         this.custom.add(fs.readFileSync(c2cignore, "utf8"));
       }
     } catch {
-      // unreadable .c2cignore: fall back to defaults only
+      // unreadable .c2gignore: fall back to defaults only
     }
   }
 

@@ -34,7 +34,7 @@ function withRecordEnvironment(run: (root: string, workspace: Workspace) => void
   }
 }
 
-describe("c2c record", () => {
+describe("c2g record", () => {
   it("records valid numeric options and command output", () => {
     withRecordEnvironment((root, workspace) => {
       const result = runRecord(root, [

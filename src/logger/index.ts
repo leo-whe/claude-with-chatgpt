@@ -37,7 +37,7 @@ export class Logger {
   private name: string;
 
   constructor(opts: LoggerOptions = {}) {
-    this.name = opts.name ?? "c2c";
+    this.name = opts.name ?? "c2g";
     this.level = LEVELS[opts.level ?? (process.env.C2G_LOG_LEVEL as LogLevel) ?? "info"] ?? LEVELS.info;
     this.useConsole = opts.console ?? false;
     if (opts.file === undefined) {

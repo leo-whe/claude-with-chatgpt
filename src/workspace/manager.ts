@@ -102,7 +102,7 @@ export class Workspace {
     this.root = real;
     this.id = createHash("sha256").update(normCase(real)).digest("hex").slice(0, 12);
     this.ignoreRules = new IgnoreRules(real);
-    this.projectConfig = parseProjectConfig(readJsonIfExists<unknown>(path.join(real, ".c2c.json")));
+    this.projectConfig = parseProjectConfig(readJsonIfExists<unknown>(path.join(real, ".c2g.json")));
     this.name = this.projectConfig.name ?? path.basename(real);
   }
 

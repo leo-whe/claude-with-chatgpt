@@ -62,7 +62,7 @@ beforeAll(async () => {
   });
   accessToken = tokens.accessToken;
 
-  client = new Client({ name: "c2c-test-client", version: "1.0.0" });
+  client = new Client({ name: "c2g-test-client", version: "1.0.0" });
   const transport = new StreamableHTTPClientTransport(new URL(`${bridge.localBaseUrl()}/mcp`), {
     requestInit: { headers: { authorization: `Bearer ${accessToken}` } },
   });

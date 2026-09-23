@@ -102,7 +102,7 @@ automatically.
 
 ### Reading a file returns ACCESS_DENIED_SENSITIVE_FILE
 Working as intended: `.env`, keys, credentials and anything matched by
-`.c2cignore` are never readable through ChatGPT. `.env.example` is allowed.
+`.c2gignore` are never readable through ChatGPT. `.env.example` is allowed.
 
 ### I cannot see Projects in the ChatGPT sidebar
 Hover **Chats** /「聊天」, click the … that appears, and choose

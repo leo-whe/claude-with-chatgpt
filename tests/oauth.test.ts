@@ -154,7 +154,7 @@ describe("authorization + token flow", () => {
 
   it("escapes the workspace name in the pairing page", async () => {
     const xssWorkspaceRoot = makeTmpDir("oauth-html");
-    write(xssWorkspaceRoot, ".c2c.json", JSON.stringify({ name: "<script>alert('xss')</script>" }));
+    write(xssWorkspaceRoot, ".c2g.json", JSON.stringify({ name: "<script>alert('xss')</script>" }));
     const xssBridge = await startBridge({
       workspaceRoot: xssWorkspaceRoot,
       port: 0,

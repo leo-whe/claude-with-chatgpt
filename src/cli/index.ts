@@ -212,7 +212,7 @@ async function ensureBridgeAndTunnel(
 }
 
 program
-  .name("c2c")
+  .name("c2g")
   .description(`${PRODUCT_NAME} — ChatGPT thinks. Claude Code works.`)
   .version(VERSION, "-v, --version")
   .configureHelp({ sortSubcommands: true });
@@ -398,7 +398,7 @@ program
     }
     if (observation.state === "stopped") {
       if (opts.json) say(JSON.stringify({ ok: false, running: false }));
-      else say("Bridge 未运行。使用 `c2c start` 启动。");
+      else say("Bridge 未运行。使用 `c2g start` 启动。");
       return;
     }
     const runtime = observation.runtime;
@@ -695,7 +695,7 @@ program
           ? "本地已就绪，还需要在 ChatGPT 删除并重新添加该连接。"
           : namedRepair.needed
             ? "固定域名还没连上，需要先登录 Cloudflare。"
-            : "仍有问题未解决，可尝试 `c2c restart --tunnel`。"
+            : "仍有问题未解决，可尝试 `c2g restart --tunnel`。"
     );
     if (!allOk || namedRepair.needed) process.exitCode = 1;
   });
@@ -1148,7 +1148,7 @@ tunnelCmd
   .requiredOption("--mode <mode>", "quick or named")
   .option("-w, --workspace <path>")
   .option("--zone <domain>", "Cloudflare domain for a named hostname")
-  .option("--hostname <hostname>", "override the default c2c-<project>.<zone>")
+  .option("--hostname <hostname>", "override the default c2g-<project>.<zone>")
   .option("--json", "machine-readable output", false)
   .action(async (opts: { mode: string; workspace?: string; zone?: string; hostname?: string; json: boolean }) => {
     const root = resolveWorkspace(opts.workspace);

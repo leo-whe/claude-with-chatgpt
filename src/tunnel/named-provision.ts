@@ -201,7 +201,7 @@ export async function provisionNamedTunnel(opts: {
     return fallbackState(opts.workspaceId, "invalid_hostname", (error as Error).message);
   }
 
-  const tunnelName = `c2c-${opts.workspaceId}`;
+  const tunnelName = `c2g-${opts.workspaceId}`;
   try {
     if (!account.hasCert()) await account.login();
     const tunnel = await account.createTunnel(tunnelName);

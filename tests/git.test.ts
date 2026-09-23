@@ -58,8 +58,8 @@ describe("gitStatus", () => {
     git(repo, "checkout", "--", "hello.txt");
   });
 
-  it("omits sensitive and .c2cignore'd paths from the names ChatGPT sees", () => {
-    write(repo, ".c2cignore", "private-notes/\n");
+  it("omits sensitive and .c2gignore'd paths from the names ChatGPT sees", () => {
+    write(repo, ".c2gignore", "private-notes/\n");
     write(repo, ".env", "SECRET_KEY=leaked-env\n");
     write(repo, "private-notes/secret.md", "CONFIDENTIAL DATA\n");
     write(repo, "public.txt", "PUBLIC CONTENT\n");
@@ -70,7 +70,7 @@ describe("gitStatus", () => {
     expect(status.untracked).not.toContain("private-notes/secret.md");
     expect(status.hidden.changes).toBeGreaterThan(0);
 
-    fs.rmSync(path.join(repo, ".c2cignore"), { force: true });
+    fs.rmSync(path.join(repo, ".c2gignore"), { force: true });
     fs.rmSync(path.join(repo, ".env"), { force: true });
     fs.rmSync(path.join(repo, "public.txt"), { force: true });
     fs.rmSync(path.join(repo, "private-notes"), { recursive: true, force: true });
@@ -204,12 +204,12 @@ describe("gitDiff pagination", () => {
     git(repo, "rm", "-f", "--cached", ".env.example", ".env");
   });
 
-  it("respects custom rules in .c2cignore for git diff", () => {
-    write(repo, ".c2cignore", "private-notes/\ncustom-secret.txt\n");
+  it("respects custom rules in .c2gignore for git diff", () => {
+    write(repo, ".c2gignore", "private-notes/\ncustom-secret.txt\n");
     write(repo, "private-notes/secret.md", "CONFIDENTIAL DATA\n");
     write(repo, "custom-secret.txt", "TOP_SECRET_FLAG=1\n");
     write(repo, "public.txt", "PUBLIC CONTENT\n");
-    git(repo, "add", "-f", ".c2cignore", "private-notes/secret.md", "custom-secret.txt", "public.txt");
+    git(repo, "add", "-f", ".c2gignore", "private-notes/secret.md", "custom-secret.txt", "public.txt");
 
     const diff = gitDiff(repo, { mode: "staged" });
     expect(diff.diff).toContain("public.txt");
@@ -217,7 +217,7 @@ describe("gitDiff pagination", () => {
     expect(diff.diff).not.toContain("CONFIDENTIAL DATA");
     expect(diff.diff).not.toContain("TOP_SECRET_FLAG");
 
-    git(repo, "rm", "-f", "--cached", ".c2cignore", "private-notes/secret.md", "custom-secret.txt", "public.txt");
+    git(repo, "rm", "-f", "--cached", ".c2gignore", "private-notes/secret.md", "custom-secret.txt", "public.txt");
   });
 
   it("handles rename provenance: sensitive->safe, safe->sensitive, safe->safe", () => {

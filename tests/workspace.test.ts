@@ -21,7 +21,7 @@ beforeAll(() => {
   write(root, "keys/id_rsa", "PRIVATE KEY\n");
   write(root, "nested/.ssh/config", "Host *\n");
   write(outside, "secret.txt", "outside data\n");
-  write(root, ".c2cignore", "private-notes/\n");
+  write(root, ".c2gignore", "private-notes/\n");
   write(root, "private-notes/todo.md", "secret notes\n");
   // symlink pointing outside the workspace (needs symlink privileges, e.g.
   // absent for unprivileged Windows runners — the escape tests then skip)
@@ -123,7 +123,7 @@ describe("sensitive files", () => {
     expectDenied("nested/.ssh/config");
   });
 
-  it("honors .c2cignore custom rules", () => {
+  it("honors .c2gignore custom rules", () => {
     expectDenied("private-notes/todo.md");
   });
 
@@ -173,11 +173,11 @@ describe("workspace identity", () => {
     expect(ws.name).toBe(path.basename(root));
   });
 
-  it("reads .c2c.json project name", () => {
+  it("reads .c2g.json project name", () => {
     const named = makeTmpDir("named");
     write(
       named,
-      ".c2c.json",
+      ".c2g.json",
       JSON.stringify({
         name: "Remi",
         maxIterations: 12,
@@ -189,9 +189,9 @@ describe("workspace identity", () => {
     cleanup(named);
   });
 
-  it("falls back to the directory name when .c2c.json has invalid types", () => {
+  it("falls back to the directory name when .c2g.json has invalid types", () => {
     const invalid = makeTmpDir("invalid-project-config");
-    write(invalid, ".c2c.json", JSON.stringify({ name: 42, maxIterations: "many" }));
+    write(invalid, ".c2g.json", JSON.stringify({ name: 42, maxIterations: "many" }));
 
     const invalidWs = new Workspace(invalid);
 

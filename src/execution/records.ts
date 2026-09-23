@@ -5,7 +5,7 @@ import { ensureDir, getStateDir } from "../config/paths.js";
 
 /**
  * Lightweight execution records written by the Claude Code harness after each
- * iteration (via `c2c record`). ChatGPT reads them through the
+ * iteration (via `c2g record`). ChatGPT reads them through the
  * `execution_summary` and `test_status` MCP tools.
  */
 export const executionRecordSchema = z.object({

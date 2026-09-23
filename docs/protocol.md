@@ -199,7 +199,7 @@ Independently review iteration 4 via git_diff and reply PLAN or DONE.
 
 ## Loop limits
 
-`maxIterations` (default 12, configurable in `.c2c.json`). When reached, Codex
+`maxIterations` (default 12, configurable in `.c2g.json`). When reached, Codex
 pauses and asks the user whether to continue.
 
 ## Boot Prompt

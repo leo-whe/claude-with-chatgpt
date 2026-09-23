@@ -186,7 +186,7 @@ Credentials stay in the OS app state directory, not in the project.
   path containment uses canonical realpaths (symlink/`../`/absolute-path escapes
   are all blocked and tested).
 - **Sensitive files never leave**: `.env*`, keys, SSH, credentials are denied by
-  default (`.env.example` allowed); `.c2cignore` adds your own rules.
+  default (`.env.example` allowed); `.c2gignore` adds your own rules.
 - **Knowing the URL grants nothing**: the public MCP endpoint requires OAuth 2.1
   (PKCE S256, dynamic client registration, rotating refresh tokens). Without a
   token: 401. Wrong workspace: 403.
