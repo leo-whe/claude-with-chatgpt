@@ -1,41 +1,49 @@
-# Codex with ChatGPT
+# Claude with ChatGPT
 
 [English](README.md) | **简体中文**
 
-> ChatGPT 负责思考，Codex 负责干活。
+> ChatGPT 负责思考，Claude Code 负责干活。
+
+> [!NOTE]
+> 本项目是 [XiaoDuoYa/codex-with-chatgpt](https://github.com/XiaoDuoYa/codex-with-chatgpt)
+> 的非官方移植版：把原本为 Codex 内置 Computer Use 浏览器写的方案，改为在
+> Claude Code 上用 `claude-in-chrome` skill 实现，思路完全一致。详见文末
+> [致谢](#致谢)。它会在你自己的浏览器里自动操作真实的 chatgpt.com 网页，
+> 使用前请先看[状态与声明](#状态与声明)。
 
 ## 解决什么问题
 
-ChatGPT 付费订阅的网页版额度大量闲置，Codex 却在消耗紧张的 API 额度做
-规划和 Review。本项目把"思考"交给你已付费的网页版 ChatGPT，Codex 只负责
+ChatGPT 付费订阅的网页版额度大量闲置，Claude Code 却在消耗紧张的 API 额度做
+规划和 Review。本项目把"思考"交给你已付费的网页版 ChatGPT，Claude Code 只负责
 执行。不用 API Key、不搞逆向代理——官方网页 + 只读 MCP 桥接。
 
 ## 这是什么
 
-把 ChatGPT 网页版变成 Codex 编码会话的"规划与审查大脑"，而执行权完全保留在
-Codex 手里。你的仓库永远不会被上传——ChatGPT 通过一条安全的、OAuth 保护的
+把 ChatGPT 网页版变成 Claude Code 编码会话的"规划与审查大脑"，而执行权完全保留在
+Claude Code 手里。你的仓库永远不会被上传——ChatGPT 通过一条安全的、OAuth 保护的
 **只读** MCP 连接，按需读取当前工作区里它真正需要的那几行代码。
 
 ## 一段话安装（纯小白专用）
 
-不懂 git、Node、终端？完全不需要懂。把下面这段话原样复制给你的编码
-Agent（Codex），然后去倒杯咖啡：
+不懂 git、Node、终端？完全不需要懂。把下面这段话原样复制给 Claude Code，
+然后去倒杯咖啡：
 
 ```text
-请帮我完整安装并配置 Codex with ChatGPT，全程自动，我是不懂技术的小白，
+请帮我完整安装并配置 Claude with ChatGPT，全程自动，我是不懂技术的小白，
 所有事情你自己做：
 
 1. 环境自检：需要 git 和 Node.js ≥ 20，缺什么就自动安装
   （macOS 用 Homebrew，Windows 用 winget），同时安装 cloudflared。
-2. 下载：把 https://github.com/XiaoDuoYa/codex-with-chatgpt 克隆到
-   ~/codex-with-chatgpt（已存在就 git pull 更新）。
+  如果 claude-in-chrome 还没连接，告诉我运行 /chrome 并等我连上。
+2. 下载：把 https://github.com/leo-whe/claude-with-chatgpt 克隆到
+   ~/claude-with-chatgpt（已存在就 git pull 更新）。
 3. 构建：在该目录里执行 corepack pnpm install 和 corepack pnpm build。
 4. 安装 Skill：把仓库里的 skill/SKILL.md 复制到
-   ~/.codex/skills/codex-with-chatgpt/SKILL.md，并把文件中
-   "The codex-with-chatgpt checkout lives at:" 那一行的路径改成实际克隆路径。
+   ~/.claude/skills/claude-with-chatgpt/SKILL.md，并把文件中
+   "The claude-with-chatgpt checkout lives at:" 那一行的路径改成实际克隆路径。
 5. 首次配置：按 SKILL.md 里的 first-time setup 流程执行
-  （运行 c2c setup，用内置浏览器打开 ChatGPT 配置连接器并输入配对码）。
-   全程只用内置浏览器，禁止打开任何第三方浏览器。
+  （运行 c2g setup，用 claude-in-chrome 打开 ChatGPT 配置连接器并输入配对码）。
+   全程只用这一个 Chrome 标签页，不要切换浏览器或窗口。
 6. 只有遇到需要我登录（ChatGPT / Cloudflare）、验证码或两步验证时才叫我，
    而且一次只告诉我一个动作。
 7. 完成后给我看 ✓ 清单，并确认文件读取测试通过。我不懂 MCP、OAuth、
@@ -43,19 +51,21 @@ Agent（Codex），然后去倒杯咖啡：
 ```
 
 **更新**：Skill 每天自动检查一次 GitHub，有新版本会自动更新并继续任务，
-无需任何操作；也可以随时对 Codex 说"更新 Codex with ChatGPT"。
+无需任何操作；也可以随时对 Claude Code 说"更新 Claude with ChatGPT"。
 
 ## 安装 → 配置 → 使用（手动版）
 
-1. 安装 Codex Skill：把 `skill/` 复制到 `~/.codex/skills/codex-with-chatgpt/`。
-2. 对 Codex 说：**"使用 Codex with ChatGPT 完成首次配置。"**
-3. 之后正常使用：**"使用 Codex with ChatGPT，帮我实现 XXX。"**
+1. 安装 Skill：把 `skill/` 复制到 `~/.claude/skills/claude-with-chatgpt/`
+   （也可以放到某个项目的 `.claude/skills/claude-with-chatgpt/` 里）。
+2. 如果 `claude-in-chrome` 还没连接，先运行 `/chrome`。
+3. 对 Claude Code 说：**"使用 Claude with ChatGPT 完成首次配置。"**
+4. 之后正常使用：**"使用 Claude with ChatGPT，帮我实现 XXX。"**
 
 说明书到此结束。你不需要知道 MCP、OAuth、Tunnel、端口、localhost 是什么——
-Codex 会自动完成所有配置，你只会看到：
+Claude Code 会自动完成所有配置，你只会看到：
 
 ```
-Codex with ChatGPT
+Claude with ChatGPT
 
 ✓ 当前项目已识别
 ✓ Workspace Bridge 已启动
@@ -66,13 +76,22 @@ Codex with ChatGPT
 Ready.
 ```
 
-唯一可能需要你动手的步骤：登录 ChatGPT（如果要用固定域名，再登录一次 Cloudflare）。**新仓库**还会请你在 ChatGPT 里建一次项目（合集）：名字用仓库名，记忆选「仅限项目记忆」。侧栏如果没有「项目」，把鼠标放在「聊天」上，点右边三个点，选「按项目整理」。之后对话都从合集页开，不用回首页。已经在用的仓库默认还是原来的一条长对话，除非你说要改成 Project。
+唯一可能需要你动手的步骤：连接 `claude-in-chrome` 扩展（用 `/chrome`，只需一次）
+并允许它访问 `chatgpt.com`、登录 ChatGPT（如果要用固定域名，再登录一次
+Cloudflare）。**新仓库**还会请你在 ChatGPT 里建一次项目（合集）：名字用仓库名，
+记忆选「仅限项目记忆」。侧栏如果没有「项目」，把鼠标放在「聊天」上，点右边三个点，
+选「按项目整理」。之后对话都从合集页开，不用回首页。已经在用的仓库默认还是原来的
+一条长对话，除非你说要改成 Project。
 
 ### 可选的固定域名
 
-默认公网地址是临时的，桥重启后会变。Codex 会删掉这个项目的 ChatGPT 插件再按新地址加回去。
+默认公网地址是临时的，桥重启后会变。Claude Code 会删掉这个项目的 ChatGPT 插件再
+按新地址加回去。
 
-如果你有 Cloudflare 账号，并且域名已经加在 Cloudflare 上，首次配置时（老用户则在下一次编码时问一次）会问你要不要用固定域名，例如 `c2c-<项目>.你的域名`。选是的话，浏览器里授权一次 Cloudflare 即可。之后重启一般不用再改插件。没有账号、不想用、登录失败：继续用临时地址，功能一样，只是修复更慢。
+如果你有 Cloudflare 账号，并且域名已经加在 Cloudflare 上，首次配置时（老用户则在
+下一次编码时问一次）会问你要不要用固定域名，例如 `c2g-<项目>.你的域名`。选是的话，
+浏览器里授权一次 Cloudflare 即可。之后重启一般不用再改插件。没有账号、不想用、
+登录失败：继续用临时地址，功能一样，只是修复更慢。
 
 凭证放在系统目录，不进项目。
 
@@ -84,32 +103,32 @@ Ready.
              │   推理 / 规划 / 审查      │
              └──────────┬──────────▲─────┘
                         │          │
-               MCP      │          │ Computer Use
+               MCP      │          │ Chrome 标签页（claude-in-chrome）
               数据面    │          │ 控制面（消息 < 1 KB）
                         ▼          │
-             ┌─────────────────────┐
-             │      C2C Bridge     │   仅监听本机回环地址
-             │  只读 MCP           │   OAuth 2.1 + 一次性配对码
-             │  OAuth + 配对       │   Cloudflare Quick Tunnel
-             │  Tunnel 管理        │
-             └──────────┬──────────┘
+             ┌───────────────────────────┐
+             │        C2G Bridge         │   仅监听本机回环地址
+             │      只读 MCP             │   OAuth 2.1 + 一次性配对码
+             │      OAuth + 配对         │   Cloudflare Quick Tunnel
+             │      Tunnel 管理          │
+             └──────────┬────────────────┘
                         │  只读
                         ▼
-             ┌─────────────────────┐          ┌─────────────────────┐
-             │     本地工作区      │◀─────────│    Codex Harness    │
-             └─────────────────────┘ 编辑/git │  Shell / 测试 / 修复 │
-                                              └─────────────────────┘
+             ┌─────────────────────┐          ┌──────────────────────┐
+             │     本地工作区      │◀─────────│      Claude Code      │
+             └─────────────────────┘ 编辑/git │   Shell / 测试 / 修复 │
+                                              └───────────────────────┘
 ```
 
-- **控制面（Computer Use）**：Codex 与 ChatGPT 之间只交换极小的结构化 `[C2C]`
-  状态消息——`INIT → PLAN → EXECUTED → REVIEW → DONE`。绝不粘贴 diff、日志
-  或文件内容。
+- **控制面（Chrome 标签页，claude-in-chrome）**：Claude Code 与 ChatGPT 之间
+  只交换极小的结构化 `[C2G]` 状态消息——`INIT → PLAN → EXECUTED → REVIEW →
+  DONE`。绝不粘贴 diff、日志或文件内容。
 - **数据面（MCP）**：ChatGPT 缺什么自己拉什么，共 9 个只读工具：
   `workspace_info`、`list_directory`、`read_file`、`search_workspace`、
   `git_status`、`git_diff`、`test_status`、`execution_summary`、
   `execution_output`。
-- **独立审查**：Codex 执行完毕后，ChatGPT 通过 MCP 亲自检查真实的 git diff
-  和测试记录——绝不因为 Codex 说"测试全过"就直接相信。
+- **独立审查**：Claude Code 执行完毕后，ChatGPT 通过 MCP 亲自检查真实的
+  git diff 和测试记录——绝不因为 Claude Code 说"测试全过"就直接相信。
 
 ## 安全模型（简版）
 
@@ -124,18 +143,19 @@ Ready.
 - **模型永远接触不到长期凭据**：唯一会出现在浏览器里的秘密是一次性配对码
   （5 分钟有效、限 5 次尝试、限速、用后即毁）。
 
-完整威胁模型：[docs/security.md](docs/security.md)
+完整威胁模型（含浏览器自动化的 ChatGPT 账号风险，属于威胁模型之外）：
+[docs/security.md](docs/security.md)
 
 ## 开发者
 
 ```bash
 pnpm install
-pnpm build          # 产出 dist/，暴露 c2c 命令
-pnpm test           # vitest：150 个测试（路径安全、OAuth、配对、MCP 端到端）
+pnpm build          # 产出 dist/，暴露 c2g 命令
+pnpm test           # vitest：约 170 个测试（路径安全、OAuth、配对、MCP 端到端）
 
-c2c setup           # 一条命令：Bridge + 隧道 + 配对码
-c2c sandbox-allow   # 把本地设置目录加入 Codex 沙箱白名单（macOS / Windows）
-c2c status / doctor / pair / unpair / logs / stop
+c2g setup           # 一条命令：Bridge + 隧道 + 配对码
+c2g sandbox-allow   # 把本 CLI 加入 Claude Code 的 permissions.allow 列表
+c2g status / doctor / pair / unpair / logs / stop
 ```
 
 环境要求：Node.js >= 20、git；公网连接需要 `cloudflared`
@@ -157,18 +177,29 @@ src/
   tunnel/     TunnelProvider 抽象 + Cloudflare Quick Tunnel
   execution/  审查闭环所需的执行记录
   process/    守护进程生命周期
-  cli/        c2c 命令行
-skill/        Codex Skill（真正的 UX 层）
+  cli/        c2g 命令行
+skill/        Claude Code Skill（真正的 UX 层）
 tests/        单元 + 集成测试
 docs/         架构 / 协议 / 安全 / 故障排查
 ```
 
 ## 状态与声明
 
-V1。已端到端验证：Bridge、OAuth + 配对、公网隧道、ChatGPT 连接器配置、
-零操作首次配置体验。
+V1 移植版。已端到端验证：Bridge、OAuth + 配对、公网隧道、ChatGPT 连接器配置、
+零操作首次配置体验，完整测试套件全绿。
 
-**非官方社区项目，与 OpenAI 无关联，未获其背书。**
+**非官方社区项目，与 OpenAI、Anthropic 均无关联，未获其背书。** 它会在你自己
+的 Chrome 会话里自动操作真实的 chatgpt.com 网页——这类对消费级网页应用的自动化
+交互，通常处于服务条款允许范围之外，这一点与上面的只读安全设计无关，任何安全
+措施都无法消除。请自行承担对你 ChatGPT 账号的风险，详见
+[docs/security.md](docs/security.md#out-of-scope-chatgpt-account-risk)。
+
+## 致谢
+
+本项目移植自 [XiaoDuoYa/codex-with-chatgpt](https://github.com/XiaoDuoYa/codex-with-chatgpt)
+（MIT 协议），"ChatGPT 规划、编码 Agent 执行"这个设计思路由该项目率先实现
+（面向 Codex）。这里的只读 MCP Bridge、OAuth/配对流程、隧道管理基本原样保留；
+Skill 本身和浏览器控制层为 Claude Code 与 `claude-in-chrome` 重写。
 
 ## 许可证
 

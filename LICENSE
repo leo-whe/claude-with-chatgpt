@@ -1,6 +1,12 @@
+This project is a port of codex-with-chatgpt (https://github.com/XiaoDuoYa/codex-with-chatgpt),
+adapted for Claude Code. Original license and copyright notice below apply to
+the carried-over portions; the same terms apply to the Claude Code-specific
+changes.
+
 MIT License
 
 Copyright (c) 2026 codex-with-chatgpt contributors
+Copyright (c) 2026 claude-with-chatgpt contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

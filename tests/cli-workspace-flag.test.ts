@@ -22,7 +22,7 @@ describe("machine-wide commands accept leftover -w", () => {
     for (const dir of dirs) cleanup(dir);
     dirs.length = 0;
     delete process.env.C2G_STATE_DIR;
-    delete process.env.CODEX_HOME;
+    delete process.env.CLAUDE_CONFIG_DIR;
   });
 
   it("update-check --json -w does not fail with unknown option", () => {
@@ -49,11 +49,11 @@ describe("machine-wide commands accept leftover -w", () => {
 
   it("sandbox-allow --json -w does not fail with unknown option", () => {
     const stateDir = isolateStateDir();
-    const codexHome = makeTmpDir("cli-w-codex-home");
-    dirs.push(stateDir, codexHome);
+    const claudeConfigHome = makeTmpDir("cli-w-claude-config-home");
+    dirs.push(stateDir, claudeConfigHome);
     const result = runCli(["sandbox-allow", "--json", "-w", "C:/Projects/aquant"], {
       C2G_STATE_DIR: stateDir,
-      CODEX_HOME: codexHome,
+      CLAUDE_CONFIG_DIR: claudeConfigHome,
     });
     expect(result.stderr).not.toMatch(/unknown option/i);
     expect(result.status).toBe(0);
